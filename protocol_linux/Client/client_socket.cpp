@@ -11,22 +11,22 @@
 
 ssize_t readn(int fd, void *buf, size_t count)
 {
-        int left = count;  //剩下的字节
+        int left = count;  //the left bytes
         char *ptr = (char*)buf;
         while(left>0)
         {
                 int readBytes = read(fd,ptr,left);
-                if(readBytes< 0)//read函数小于0有两种情况：1中断 2出错
+                if(readBytes< 0)//the return of read function has two situations：1.interrupt 2.error
                 {
-                        if(errno == EINTR)//读被中断
+                        if(errno == EINTR)//read interrupt
                         {
                                 continue;
                         }
                         return -1;
                 }
-                if(readBytes == 0)//读到了EOF
+                if(readBytes == 0)//read the EOF
                 {
-                        //对方关闭呀
+                        //the other side close
                         printf("peer close\n");
                         return count - left;
                 }
@@ -37,8 +37,8 @@ ssize_t readn(int fd, void *buf, size_t count)
 }
 
 /*
-   writen 函数
-   写入count字节的数据
+   writen function
+   write count bytes
  */
 ssize_t writen(int fd, void *buf, size_t count)
 {
@@ -71,7 +71,7 @@ int client_socket_send(int sockfd, char *buf, size_t buf_len)
 {
         int len;
         struct packet writebuf;
-        bzero(&writebuf, sizeof(writebuf));
+        memset(&writebuf, 0, sizeof(writebuf));
         int n = buf_len;
         writebuf.msgLen = htonl(n);
         memcpy(writebuf.data, buf, buf_len);
@@ -96,7 +96,7 @@ int client_socket_recv(int sockfd, char *buf, size_t buf_len)
 {
         int len;
         struct packet readbuf;
-        bzero(&readbuf, sizeof(readbuf));
+        memset(&readbuf, 0, sizeof(readbuf));
         int ret = readn(sockfd, &readbuf.msgLen, 4);
         int dataBytes = ntohl(readbuf.msgLen);
         len = readn(sockfd, buf, dataBytes);
@@ -134,7 +134,7 @@ int client_socket_init(char *addr)
                 return -101;
         }
 
-        bzero(&server_addr, sizeof(server_addr));
+        memset(&server_addr, 0, sizeof(server_addr));
         server_addr.sin_family = AF_INET;
         server_addr.sin_port = htons(port);
         server_addr.sin_addr.s_addr = inet_addr(addr);

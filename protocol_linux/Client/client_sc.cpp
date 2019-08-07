@@ -8,31 +8,31 @@
 
 int client_sc_send(int sockfd, char *buf, int buf_len, char *us_sk, int us_sk_length)
 {
-        char key[EVP_MAX_KEY_LENGTH]; //保存密钥的数组
-        char iv[EVP_MAX_KEY_LENGTH]; //保存初始化向量的数组
-        EVP_CIPHER_CTX ctx; //EVP加密上下文环境
-        char out[AES_BLOCK_NUM * AES_BLOCK_SIZE + AES_BLOCK_SIZE]; //保存加密后密文的缓冲区数组
+        char key[EVP_MAX_KEY_LENGTH]; //the array to keep key
+        char iv[EVP_MAX_KEY_LENGTH]; //the array to keep iv
+        EVP_CIPHER_CTX ctx; //EVP Cipher CTX
+        char out[AES_BLOCK_NUM * AES_BLOCK_SIZE + AES_BLOCK_SIZE]; //the array to keep cipher
         int outl;
-        char in[AES_BLOCK_NUM * AES_BLOCK_SIZE]; //保存明文数据和MD5值的数组
+        char in[AES_BLOCK_NUM * AES_BLOCK_SIZE]; //the array to keep plain and MD
         int inl;
         int ret;
         int i;
         int total;
 
         char md5sum[MD5SIZE];
-        bzero(md5sum, MD5SIZE);
+        memset(md5sum, 0, MD5SIZE);
         client_md5sum(buf, buf_len, md5sum);
 
-        //设置key和iv
-        bzero(key, EVP_MAX_KEY_LENGTH);
-        bzero(iv, EVP_MAX_IV_LENGTH);
+        //Set key and iv
+        memset(key, 0, EVP_MAX_KEY_LENGTH);
+        memset(iv, 0, EVP_MAX_IV_LENGTH);
         memcpy(key, us_sk, us_sk_length);
         for(i = 0; i < EVP_MAX_IV_LENGTH; i++)
         {
                 iv[i] = i;
         }
 
-        //初始化ctx
+        //Initialize ctx
         EVP_CIPHER_CTX_init(&ctx);
 
         if (us_sk_length == 16)
@@ -52,8 +52,8 @@ int client_sc_send(int sockfd, char *buf, int buf_len, char *us_sk, int us_sk_le
                 return -401; //key_length err
         }
 
-        bzero(in, AES_BLOCK_NUM * AES_BLOCK_SIZE);
-        bzero(out, AES_BLOCK_NUM * AES_BLOCK_SIZE + AES_BLOCK_SIZE);
+        memset(in, 0, AES_BLOCK_NUM * AES_BLOCK_SIZE);
+        memset(out, 0, AES_BLOCK_NUM * AES_BLOCK_SIZE + AES_BLOCK_SIZE);
         total = 0;
         inl = 0;
         outl = 0;
@@ -90,28 +90,28 @@ int client_sc_send(int sockfd, char *buf, int buf_len, char *us_sk, int us_sk_le
 
 int client_sc_recv(int sockfd, char *buf, int buf_len, char *us_sk, int us_sk_length)
 {
-        char key[EVP_MAX_KEY_LENGTH]; //保存密钥的数组
-        char iv[EVP_MAX_KEY_LENGTH]; //保存初始化向量的数组
-        EVP_CIPHER_CTX ctx; //EVP加密上下文环境
-        char out[AES_BLOCK_NUM * AES_BLOCK_SIZE + AES_BLOCK_SIZE]; //保存解密后明文的缓冲区数组
+        char key[EVP_MAX_KEY_LENGTH]; //the array to keep key
+        char iv[EVP_MAX_KEY_LENGTH]; //the array to keep iv
+        EVP_CIPHER_CTX ctx; //EVP Cipher CTX
+        char out[AES_BLOCK_NUM * AES_BLOCK_SIZE + AES_BLOCK_SIZE]; //the array to keep plain and MD
         int outl;
-        char in[AES_BLOCK_NUM * AES_BLOCK_SIZE]; //保存密文数据的数组
+        char in[AES_BLOCK_NUM * AES_BLOCK_SIZE]; //the array to keep cipher
         int inl;
         int ret;
         int i;
         int total;
         int bufl;
 
-        //设置key和iv
-        bzero(key, EVP_MAX_KEY_LENGTH);
-        bzero(iv, EVP_MAX_IV_LENGTH);
+        //Set key and iv
+        memset(key, 0, EVP_MAX_KEY_LENGTH);
+        memset(iv, 0, EVP_MAX_IV_LENGTH);
         memcpy(key, us_sk, us_sk_length);
         for(i = 0; i < EVP_MAX_IV_LENGTH; i++)
         {
                 iv[i] = i;
         }
 
-        //初始化ctx
+        //Initialize ctx
         EVP_CIPHER_CTX_init(&ctx);
 
         if (us_sk_length == 16)
@@ -131,8 +131,8 @@ int client_sc_recv(int sockfd, char *buf, int buf_len, char *us_sk, int us_sk_le
                 return -401;  //key_length err
         }
 
-        bzero(in, AES_BLOCK_NUM * AES_BLOCK_SIZE);
-        bzero(out, AES_BLOCK_NUM * AES_BLOCK_SIZE + AES_BLOCK_SIZE);
+        memset(in, 0, AES_BLOCK_NUM * AES_BLOCK_SIZE);
+        memset(out, 0, AES_BLOCK_NUM * AES_BLOCK_SIZE + AES_BLOCK_SIZE);
         total = 0;
         inl = 0;
         outl = 0;
@@ -166,16 +166,16 @@ int client_sc_recv(int sockfd, char *buf, int buf_len, char *us_sk, int us_sk_le
                 return -103;//超过缓冲区长度
         }
 
-        bzero(buf, buf_len);
+        memset(buf, 0, buf_len);
         memcpy(buf, out, bufl);
 
         char md5sum[MD5SIZE];
-        bzero(md5sum, MD5SIZE);
+        memset(md5sum, 0, MD5SIZE);
         memcpy(md5sum, out + bufl, MD5SIZE);
 
         if (client_md5check(buf, bufl, md5sum) < 0)
         {
-                return -102;//MD5校验错误，消息被篡改
+                return -102;//MD5 check error，message has been changed
         }
 
         return bufl;
@@ -198,14 +198,14 @@ int client_sc_send_file(int sockfd, char *file_path, char *us_sk, int us_sk_leng
                 return -301;
         }
 
-        //循环读取原文，解密后后保存到明文文件。
+        //Cycle read plain, encrypt and send
         while(1)
         {
-                bzero(buf, BUFMAX);
+                memset(buf, 0, BUFMAX);
                 buf_len = 0;
-                bzero(buf, BUFMAX);
+                memset(buf, 0, BUFMAX);
                 buf_len = fread(buf, 1, BUFMAX, fpIn);
-                if(buf_len <= 0) //读取原文结束
+                if(buf_len <= 0) //read plain over
                         break;
                 ret = client_sc_send(sockfd, buf, buf_len, us_sk, us_sk_length);
                 if (ret < 0)
@@ -219,10 +219,10 @@ int client_sc_send_file(int sockfd, char *file_path, char *us_sk, int us_sk_leng
         fclose(fpIn);
 
         char md5sum[MD5SIZE];
-        bzero(md5sum, MD5SIZE);
+        memset(md5sum, 0, MD5SIZE);
 
         buf_len = 0;
-        bzero(buf, BUFMAX);
+        memset(buf, 0, BUFMAX);
         strcpy(buf, "filend");
         buf_len = strlen(buf);
         ret = client_sc_send(sockfd, buf, buf_len, us_sk, us_sk_length);
@@ -243,6 +243,7 @@ int client_sc_send_file(int sockfd, char *file_path, char *us_sk, int us_sk_leng
         free(buf);
         return 0;
 }
+
 int client_sc_recv_file(int sockfd, char *file_path, char *us_sk, int us_sk_length)
 {
         char *buf;
@@ -252,7 +253,7 @@ int client_sc_recv_file(int sockfd, char *file_path, char *us_sk, int us_sk_leng
 
         FILE *fpOut;
 
-        //打开保存明文的文件
+        //Open the file to save plain
         fpOut = fopen(file_path, "wb");
 
         if(fpOut == NULL)
@@ -261,11 +262,11 @@ int client_sc_recv_file(int sockfd, char *file_path, char *us_sk, int us_sk_leng
                 return -301;
         }
 
-        //循环读取原文，解密后后保存到明文文件。
+        //Cycle read cipher, decrypt and save to plain file
         while(1)
         {
                 buf_len = 0;
-                bzero(buf, BUFMAX);
+                memset(buf, 0, BUFMAX);
                 buf_len = client_sc_recv(sockfd, buf, BUFMAX, us_sk, us_sk_length);
                 if (buf_len < 0)
                 {
@@ -275,16 +276,16 @@ int client_sc_recv_file(int sockfd, char *file_path, char *us_sk, int us_sk_leng
                 }
                 if(strcmp(buf, "filend") == 0)
                         break;
-                fwrite(buf, 1, buf_len, fpOut);//保存明文到文件
+                fwrite(buf, 1, buf_len, fpOut); //save plain to file
         }
 
         fclose(fpOut);
 
         char md5sum[MD5SIZE];
-        bzero(md5sum, MD5SIZE);
+        memset(md5sum, 0, MD5SIZE);
 
         buf_len = 0;
-        bzero(buf, BUFMAX);
+        memset(buf, 0, BUFMAX);
         buf_len = client_sc_recv(sockfd, buf, BUFMAX, us_sk, us_sk_length);
         if (buf_len < 0)
         {

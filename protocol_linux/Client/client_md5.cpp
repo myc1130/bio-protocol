@@ -5,7 +5,7 @@
 
 int client_md5sum(char *buf, int buf_len, char *md5sum)
 {
-        bzero(md5sum, MD5SIZE);
+        memset(md5sum, 0, MD5SIZE);
         MD5((unsigned char *)buf, buf_len, (unsigned char *)md5sum);
 
         return 0;
@@ -13,7 +13,7 @@ int client_md5sum(char *buf, int buf_len, char *md5sum)
 int client_md5check(char *buf, int buf_len, char *md5sum)
 {
         char outmd[MD5SIZE];
-        bzero(outmd, MD5SIZE);
+        memset(outmd, 0, MD5SIZE);
 
         MD5((unsigned char *)buf, buf_len, (unsigned char *)outmd);
 
@@ -30,10 +30,10 @@ int client_md5sum_file(char *file_path, char *md5sum)
         char outmd[MD5SIZE];
         char buf[BUFMAX];
         int len;
-        FILE *fp;
+        FILE *fp = NULL;
 
-        bzero(outmd, MD5SIZE);
-        bzero(buf, BUFMAX);
+        memset(outmd, 0, MD5SIZE);
+        memset(buf, 0, BUFMAX);
         len = 0;
         fp = fopen(file_path, "rb");
         if(fp == NULL)
@@ -46,11 +46,11 @@ int client_md5sum_file(char *file_path, char *md5sum)
         while((len = fread(buf, 1, BUFMAX, fp))>0)
         {
                 MD5_Update(&ctx, buf, len);
-                bzero(buf, BUFMAX);
+                memset(buf, 0, BUFMAX);
         }
         MD5_Final((unsigned char *)outmd, &ctx);
 
-        bzero(md5sum, MD5SIZE);
+        memset(md5sum, 0, MD5SIZE);
         memcpy(md5sum, outmd, MD5SIZE);
 
         return 0;
@@ -63,8 +63,8 @@ int client_md5check_file(char *file_path, char *md5sum)
         int len;
         FILE *fp;
 
-        bzero(outmd, MD5SIZE);
-        bzero(buf, BUFMAX);
+        memset(outmd, 0, MD5SIZE);
+        memset(buf, 0, BUFMAX);
         len = 0;
         fp = fopen(file_path, "rb");
         if(fp == NULL)
@@ -77,7 +77,7 @@ int client_md5check_file(char *file_path, char *md5sum)
         while((len = fread(buf, 1, BUFMAX, fp)) > 0)
         {
                 MD5_Update(&ctx, buf, len);
-                bzero(buf, BUFMAX);
+                memset(buf, 0, BUFMAX);
         }
         MD5_Final((unsigned char *)outmd, &ctx);
 

@@ -17,7 +17,7 @@ int main()
 
         char err[64];
         int interval = 3;
-        bzero(err, sizeof(err));
+        memory(err, 0, sizeof(err));
         ret = anetKeepAlive(err, sockfd, interval);
         if (ret < 0)
         {

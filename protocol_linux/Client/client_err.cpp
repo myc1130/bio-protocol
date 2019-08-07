@@ -4,14 +4,14 @@
 
 void client_err_msg()
 {
-        //加载错误信息
+        //Load error information
         ERR_load_ERR_strings();
         ERR_load_crypto_strings();
-        // 获取错误号
+        // Get the error number
         unsigned long ulErr = ERR_get_error();
         char szErrMsg[1024] = {0};
         char *pTmp = NULL;
-        // 格式：error:errId:库:函数:原因
+        // format: error:errId:lib:function:resons
         pTmp = ERR_error_string(ulErr,szErrMsg);
         printf("%s\n", szErrMsg);
 }
@@ -20,7 +20,7 @@ void client_err_handle(int sockfd, int err_num)
 {
         int ret;
         char replay[RE_MAX_LENGTH];
-        bzero(replay, RE_MAX_LENGTH);
+        memset(replay, 0, RE_MAX_LENGTH);
 
         switch(err_num) {
         case -1:

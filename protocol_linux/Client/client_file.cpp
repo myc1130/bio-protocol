@@ -2,10 +2,10 @@
 
 int client_file_send(int sockfd, char *user_id, char *file_path, char *md5sum, char *rndnum, int rndnum_len, PrintOpts *opts, char *us_sk, int us_sk_length)
 {
-        int ret = 0;
+        int ret;
 
         char fun[FUN_MAX_LENGTH];
-        bzero(fun, sizeof(fun));
+        memset(fun, 0, sizeof(fun));
         strcpy(fun, "file_send");
         ret = client_sc_send(sockfd, fun, strlen(fun), us_sk, us_sk_length);
         if (ret < 0)
@@ -36,7 +36,7 @@ int client_file_send(int sockfd, char *user_id, char *file_path, char *md5sum, c
                 return ret;
 
         char replay[RE_MAX_LENGTH];
-        bzero(replay, RE_MAX_LENGTH);
+        memset(replay, 0, RE_MAX_LENGTH);
         ret = client_socket_recv(sockfd, replay, RE_MAX_LENGTH);
         if (ret < 0)
         {
