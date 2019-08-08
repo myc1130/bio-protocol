@@ -1,6 +1,6 @@
 #include <openssl/md5.h>
 #include <dlfcn.h>
-#include <mysql/mysql.h>
+#include <mysql.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -24,7 +24,7 @@ int server_register(int new_fd, MYSQL mysql)
         help_data = (char *)malloc(HLDA_MAX_LENGTH * sizeof(char));
         w_auth = (char *)malloc(HASHSIZE * sizeof(char));
 
-        bzero(user_id, ID_MAX_LENGTH);
+        memset(user_id, 0, ID_MAX_LENGTH);
         id_len = 0;
         id_len = server_socket_recv(new_fd, user_id, ID_MAX_LENGTH);
         if (id_len < 0)
@@ -36,7 +36,7 @@ int server_register(int new_fd, MYSQL mysql)
                 return id_len;
         }
 
-        bzero(help_data, HLDA_MAX_LENGTH);
+        memset(help_data, 0, HLDA_MAX_LENGTH);
         help_data_length = 0;
         help_data_length = server_socket_recv(new_fd, help_data, HLDA_MAX_LENGTH);
         if (help_data_length < 0)
@@ -48,7 +48,7 @@ int server_register(int new_fd, MYSQL mysql)
                 return help_data_length;
         }
 
-        bzero(w_auth, HASHSIZE);
+        memset(w_auth, 0, HASHSIZE);
         w_auth_len = 0;
         w_auth_len = server_socket_recv(new_fd, w_auth, HASHSIZE);
         if (w_auth_len < 0)
@@ -71,7 +71,7 @@ int server_register(int new_fd, MYSQL mysql)
         }
 
         char replay[RE_MAX_LENGTH];
-        bzero(replay, RE_MAX_LENGTH);
+        memset(replay, 0, RE_MAX_LENGTH);
         strcpy(replay, "register_OK");
         ret = server_socket_send(new_fd, replay, strlen(replay));
         if (ret < 0)

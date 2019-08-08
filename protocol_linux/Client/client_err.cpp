@@ -12,7 +12,7 @@ void client_err_msg()
         char szErrMsg[1024] = {0};
         char *pTmp = NULL;
         // format: error:errId:lib:function:resons
-        pTmp = ERR_error_string(ulErr,szErrMsg);
+        pTmp = ERR_error_string(ulErr, szErrMsg);
         printf("%s\n", szErrMsg);
 }
 
@@ -22,7 +22,8 @@ void client_err_handle(int sockfd, int err_num)
         char replay[RE_MAX_LENGTH];
         memset(replay, 0, RE_MAX_LENGTH);
 
-        switch(err_num) {
+        switch (err_num)
+        {
         case -1:
                 break;
         case -101:

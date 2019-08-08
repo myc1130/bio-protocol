@@ -36,14 +36,14 @@ int client_md5sum_file(char *file_path, char *md5sum)
         memset(buf, 0, BUFMAX);
         len = 0;
         fp = fopen(file_path, "rb");
-        if(fp == NULL)
+        if (fp == NULL)
         {
                 printf("Can't open file %s\n", file_path);
                 return -301;
         }
 
         MD5_Init(&ctx);
-        while((len = fread(buf, 1, BUFMAX, fp))>0)
+        while ((len = fread(buf, 1, BUFMAX, fp)) > 0)
         {
                 MD5_Update(&ctx, buf, len);
                 memset(buf, 0, BUFMAX);
@@ -67,14 +67,14 @@ int client_md5check_file(char *file_path, char *md5sum)
         memset(buf, 0, BUFMAX);
         len = 0;
         fp = fopen(file_path, "rb");
-        if(fp == NULL)
+        if (fp == NULL)
         {
                 printf("Can't open file %s\n", file_path);
                 return -301;
         }
 
         MD5_Init(&ctx);
-        while((len = fread(buf, 1, BUFMAX, fp)) > 0)
+        while ((len = fread(buf, 1, BUFMAX, fp)) > 0)
         {
                 MD5_Update(&ctx, buf, len);
                 memset(buf, 0, BUFMAX);

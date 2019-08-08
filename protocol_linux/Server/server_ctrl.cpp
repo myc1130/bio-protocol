@@ -7,7 +7,7 @@
 #include <resolv.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <mysql/mysql.h>
+#include <mysql.h>
 #include "server_ctrl.h"
 
 int main()
@@ -47,7 +47,7 @@ int main()
                        new_fd);
 
                 pid_t pid = fork();
-                if(pid < 0)
+                if (pid < 0)
                 {
                         perror("fork");
                         _exit(-1);
@@ -59,7 +59,7 @@ int main()
                         int ret;
                         char err[64];
                         int interval = 3;
-                        bzero(err, sizeof(err));
+                        memset(err, 0, sizeof(err));
                         ret = anetKeepAlive(err, new_fd, interval);
                         if (ret < 0)
                         {
@@ -78,7 +78,7 @@ int main()
                         while (1)
                         {
                                 printf("Waiting for function......");
-                                bzero(fun, FUN_MAX_LENGTH);
+                                memset(fun, 0, FUN_MAX_LENGTH);
                                 if (!flag)
                                 {
                                         ret = server_socket_recv(new_fd, fun, FUN_MAX_LENGTH);
@@ -109,7 +109,7 @@ int main()
                                 }
                                 else if (strcmp(fun, "auth") == 0)
                                 {
-                                        bzero(us_sk, HASHSIZE);
+                                        memset(us_sk, 0, HASHSIZE);
                                         ret = server_auth(new_fd, mysql, us_sk);
                                         if (ret < 0)
                                         {

@@ -15,16 +15,16 @@
 
 typedef struct print_options
 {
-        char printer_name[64];        //
+        char printer_name[64];  //
         char color[16];         //Colorful print，default false
         char media[16];         //paper type, default a4
         char sides[32];         //whether two-side print and the direction, can be:one-sided,two-sided-long-edge,two-sided-short-edge
         int num_copies;         //copies of
-        char pages_list[64];         //the range of print
-        int num_up;         //the pages on every paper, can be:2,4,6,9,16
-        char num_up_layout[16];         //the layout of print, can be:"btlr", "btrl", "lrbt", "lrtb", "rlbt", "rltb", "tblr", or "tbrl"
-        int priority;         //the priority of print, default 50
-}PrintOpts;
+        char pages_list[64];    //the range of print
+        int num_up;             //the pages on every paper, can be:2,4,6,9,16
+        char num_up_layout[16]; //the layout of print, can be:"btlr", "btrl", "lrbt", "lrtb", "rlbt", "rltb", "tblr", or "tbrl"
+        int priority;           //the priority of print, default 50
+} PrintOpts;
 
 /** Init the socket of client
  *  \return socket on success and 0 if an error occured

@@ -108,9 +108,9 @@ int client_auth(int sockfd, char *user_id, char *user_pw, char *bio_key, int bio
         /* Initialize EC */
         /* Get the number of EC */
         crv_len = EC_get_builtin_curves(NULL, 0);
-        curves = (EC_builtin_curve *)malloc(sizeof(EC_builtin_curve) *crv_len);
+        curves = (EC_builtin_curve *)malloc(sizeof(EC_builtin_curve) * crv_len);
 
-        /* Get the list of ECC */
+        /* Get the list of EC */
         EC_get_builtin_curves(curves, crv_len);
 
         /* Choose one EC */
@@ -210,7 +210,7 @@ int client_auth(int sockfd, char *user_id, char *user_pw, char *bio_key, int bio
         }
         printf("Ta EC_POINT_point2oct suc\n");
 
-        memset(hash_in, 0, 3*BUFMAX);
+        memset(hash_in, 0, 3 * BUFMAX);
         hash_in_len = 0;
         client_memcat(hash_in, asP_buf, &hash_in_len, asP_buf_len);
         client_memcat(hash_in, Ta_buf, &hash_in_len, Ta_buf_len);
@@ -221,7 +221,7 @@ int client_auth(int sockfd, char *user_id, char *user_pw, char *bio_key, int bio
         MD5((unsigned char *)hash_in, hash_in_len, (unsigned char *)K);
 
         /* Calculate w_auth = H(bio_key||user_pw) */
-        memset(hash_in, 0, 3*BUFMAX);
+        memset(hash_in, 0, 3 * BUFMAX);
         hash_in_len = 0;
         client_memcat(hash_in, bio_key, &hash_in_len, bio_key_length);
         client_memcat(hash_in, user_pw, &hash_in_len, strlen(user_pw));
@@ -231,7 +231,7 @@ int client_auth(int sockfd, char *user_id, char *user_pw, char *bio_key, int bio
         MD5((unsigned char *)hash_in, hash_in_len, (unsigned char *)w_auth);
 
         /* Calculate u_Auth = H(K||w_auth) */
-        memset(hash_in, 0, 3*BUFMAX);
+        memset(hash_in, 0, 3 * BUFMAX);
         hash_in_len = 0;
         client_memcat(hash_in, K, &hash_in_len, HASHSIZE);
         client_memcat(hash_in, w_auth, &hash_in_len, HASHSIZE);
@@ -263,7 +263,7 @@ int client_auth(int sockfd, char *user_id, char *user_pw, char *bio_key, int bio
         if (ret < 0)
         {
                 printf("u_Auth send err\n");
-                rresult = ret;
+                result = ret;
                 goto end;
         }
         printf("u_Auth send suc\n");
@@ -333,7 +333,7 @@ int client_auth(int sockfd, char *user_id, char *user_pw, char *bio_key, int bio
 
         /* Auth s_Auth = HMACk(Ta||Tb||pubkey||rnd_rs */
         hmac_in = (char *)malloc(3 * BUFMAX * sizeof(char));
-        memset(hmac_in, 0, 3*BUFMAX);
+        memset(hmac_in, 0, 3 * BUFMAX);
         hmac_in_len = 0;
         client_memcat(hmac_in, Ta_buf, &hmac_in_len, Ta_buf_len);
         client_memcat(hmac_in, Tb_buf, &hmac_in_len, Tb_buf_len);
@@ -373,7 +373,7 @@ int client_auth(int sockfd, char *user_id, char *user_pw, char *bio_key, int bio
         printf("abP EC_POINT_mul suc\n");
 
         /* Calculate us_sk = H(K||w_auth||abP||user_id||s_ID||Ta||Tb||sP) */
-        memset(hash_in, 0, 3*BUFMAX);
+        memset(hash_in, 0, 3 * BUFMAX);
         hash_in_len = 0;
         client_memcat(hash_in, K, &hash_in_len, HASHSIZE);
         client_memcat(hash_in, w_auth, &hash_in_len, HASHSIZE);
@@ -400,7 +400,7 @@ int client_auth(int sockfd, char *user_id, char *user_pw, char *bio_key, int bio
         MD5((unsigned char *)hash_in, hash_in_len, (unsigned char *)us_sk);
 
         /* Calculate u_n = H(K||w_auth||abP||user_id||s_ID) */
-        memset(hash_in, 0, 3*BUFMAX);
+        memset(hash_in, 0, 3 * BUFMAX);
         hash_in_len = 0;
         client_memcat(hash_in, K, &hash_in_len, HASHSIZE);
         client_memcat(hash_in, w_auth, &hash_in_len, HASHSIZE);

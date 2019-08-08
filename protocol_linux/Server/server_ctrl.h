@@ -1,7 +1,7 @@
 #include <openssl/ec.h>
 #include <openssl/bn.h>
 #include <openssl/crypto.h>
-#include <mysql/mysql.h>
+#include <mysql.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,15 +23,15 @@
 typedef struct print_options
 {
         char printer_name[64];  //
-        char color[16];   //彩色打印，默认是false
-        char media[16];   //纸张类型, 默认是a4
-        char sides[32];   //是否双面面打印，以及双面打印的方�? 可取值：one-sided,two-sided-long-edge,two-sided-short-edge
-        int num_copies;   //打印份数
-        char pages_list[64];   //打印页范�?
-        int num_up;   //每张纸上的页数。可取值：2,4,6,9,16
-        char num_up_layout[16];   //一纸多页打印是的排列方式。可取值："btlr", "btrl", "lrbt", "lrtb", "rlbt", "rltb", "tblr", or "tbrl"
-        int priority;   //打印任务的优先级�?-100】，默认值是50
-}PrintOpts;
+        char color[16];         //Colorful print，default false
+        char media[16];         //paper type, default a4
+        char sides[32];         //whether two-side print and the direction, can be:one-sided,two-sided-long-edge,two-sided-short-edge
+        int num_copies;         //copies of
+        char pages_list[64];    //the range of print
+        int num_up;             //the pages on every paper, can be:2,4,6,9,16
+        char num_up_layout[16]; //the layout of print, can be:"btlr", "btrl", "lrbt", "lrtb", "rlbt", "rltb", "tblr", or "tbrl"
+        int priority;           //the priority of print, default 50
+} PrintOpts;
 
 /** Init the socket of server
  *  \return socket on success and error code if an error occured

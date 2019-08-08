@@ -26,7 +26,7 @@ int client_register(int sockfd, char *user_id, char *user_pw, char *help_data, i
         w_auth = (char *)malloc(HASHSIZE * sizeof(char));
         hash_in = (char *)malloc(3 * BUFMAX * sizeof(char));
 
-        memset(hash_in, 0, 3*BUFMAX);
+        memset(hash_in, 0, 3 * BUFMAX);
         hash_in_len = 0;
         client_memcat(hash_in, bio_key, &hash_in_len, bio_key_length);
         client_memcat(hash_in, user_pw, &hash_in_len, strlen(user_pw));
