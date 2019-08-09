@@ -40,7 +40,7 @@ use test;
 ```
 create table bio(user_id varchar(20) not null,
                  help_data blob not null,
-                 w_auth, varchar(32) not null,
+                 w_auth varchar(32) not null,
                  primary key(user_id));
 ```
 创建一个存储用户打印文件相关信息的数据表
