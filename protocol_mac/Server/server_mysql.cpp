@@ -53,9 +53,11 @@ int server_mysql_insert(MYSQL mysql, char *user_id, int id_len, char *help_data,
 
         if (mysql_query(&mysql, query))
         {
+                printf("%s\n", query);
                 printf("\n");
                 printf("insert err\n");
-                return -204;
+                printf("%s\n", mysql_error(&mysql));
+                 return -204;
         }
 
         return 0;
