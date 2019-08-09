@@ -11,7 +11,9 @@
 int main()
 {
         int ret;
-        char ip[20] = "192.168.111.17";
+        char ip[20] = "127.0.0.1";
+        printf("Please input the ip: ");
+        scanf("%s", ip);
         int sockfd;
         sockfd = client_socket_init(ip);
 

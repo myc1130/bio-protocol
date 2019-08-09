@@ -7,7 +7,7 @@
 #include <resolv.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <mysql.h>
+#include <mysql/mysql.h>
 #include "server_ctrl.h"
 
 int main()

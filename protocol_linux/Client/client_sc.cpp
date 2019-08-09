@@ -163,7 +163,7 @@ int client_sc_recv(int sockfd, char *buf, int buf_len, char *us_sk, int us_sk_le
 
         if (bufl > buf_len)
         {
-                return -103; //超过缓冲区长度
+                return -103; //Exceeded buffer length
         }
 
         memset(buf, 0, buf_len);

@@ -1,6 +1,6 @@
 #include <openssl/md5.h>
 #include <dlfcn.h>
-#include <mysql.h>
+#include <mysql/mysql.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

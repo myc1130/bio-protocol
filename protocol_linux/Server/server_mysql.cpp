@@ -1,5 +1,5 @@
 #include <dlfcn.h>
-#include <mysql.h>
+#include <mysql/mysql.h>
 #include "server_ctrl.h"
 
 MYSQL server_mysql_init()

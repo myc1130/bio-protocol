@@ -1,7 +1,7 @@
 #include <openssl/ec.h>
 #include <openssl/bn.h>
 #include <openssl/crypto.h>
-#include <mysql.h>
+#include <mysql/mysql.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

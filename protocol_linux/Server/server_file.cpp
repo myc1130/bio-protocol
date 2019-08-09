@@ -3,7 +3,7 @@
 #include <pwd.h>
 #include <unistd.h>
 #include <dlfcn.h>
-#include <mysql.h>
+#include <mysql/mysql.h>
 #include "server_ctrl.h"
 
 int server_file_recv(int new_fd, MYSQL mysql, char *us_sk, int us_sk_length)
