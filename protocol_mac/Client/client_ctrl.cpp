@@ -73,30 +73,9 @@ int main()
                                 {
                                         printf("client_register err\n");
                                 }
-                                char replay[16];
-                                bzero(replay, 16);
-                                ret = client_socket_recv(sockfd, replay, 16);
-                                if (ret <= 0)
-                                {
-                                        if (ret < 0)
-                                        {
-                                                printf("replay recv err\n");
-                                                bzero(err_res, 32);
-                                                strcpy(err_res, "clienterr_link");
-                                                client_err_handle(sockfd, ret);
-                                        }
-                                        printf("client_register failed\n");
-                                }
                                 else
                                 {
-                                        if (strcmp(replay, "registerOK") == 0)
-                                        {
-                                                printf("client_register OK\n");
-                                        }
-                                        else
-                                        {
-                                                printf("client_register failed\n");
-                                        }
+                                        printf("client register succ!\n");
                                 }
                         }
                         else if (strcmp(fun, "auth") == 0)
@@ -109,34 +88,7 @@ int main()
                                 }
                                 else
                                 {
-                                        char replay[16];
-                                        bzero(replay, 16);
-                                        ret = client_socket_recv(sockfd, replay, 16);
-                                        if (ret <= 0)
-                                        {
-                                                if (ret < 0)
-                                                {
-                                                        printf("replay recv err\n");
-                                                        bzero(err_res, 32);
-                                                        strcpy(err_res, "clienterr_link");
-                                                        client_err_handle(sockfd, ret);
-                                                }
-                                                printf("client_auth failed\n");
-                                        }
-                                        else
-                                        {
-                                                if (strcmp(replay, "authOK") == 0)
-                                                {
-                                                        printf("client_auth OK\n");
-                                                        printf("Protocol finished, the sk is:");
-                                                        client_output(us_sk, HASHSIZE);
-                                                        printf("\n");
-                                                }
-                                                else
-                                                {
-                                                        printf("client_auth failed\n");
-                                                }
-                                        }
+                                        printf("client auth succ!\n");
                                 }
                         }
                         else if (strcmp(fun, "quit") == 0)

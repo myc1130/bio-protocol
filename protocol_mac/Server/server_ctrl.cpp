@@ -77,34 +77,45 @@ int main()
 
                         while (1)
                         {
-                                printf("Waiting for function......");
+                                printf("Waiting for function......\n");
                                 memset(fun, 0, FUN_MAX_LENGTH);
-                                if (!flag)
+                                ret = server_socket_recv(new_fd, fun, FUN_MAX_LENGTH);
+                                if (ret < 0)
                                 {
-                                        ret = server_socket_recv(new_fd, fun, FUN_MAX_LENGTH);
-                                        if (ret < 0)
-                                        {
-                                                server_err_handle(new_fd, ret);
-                                                break;
-                                        }
+                                        server_err_handle(new_fd, ret);
+                                        break;
                                 }
-                                else
-                                {
-                                        ret = server_sc_recv(new_fd, fun, FUN_MAX_LENGTH, us_sk, MD5SIZE);
-                                        if (ret < 0)
-                                        {
-                                                server_err_handle(new_fd, ret);
-                                                break;
-                                        }
-                                }
+                                // if (!flag)
+                                // {
+                                //         ret = server_socket_recv(new_fd, fun, FUN_MAX_LENGTH);
+                                //         if (ret < 0)
+                                //         {
+                                //                 server_err_handle(new_fd, ret);
+                                //                 break;
+                                //         }
+                                // }
+                                // else
+                                // {
+                                //         ret = server_sc_recv(new_fd, fun, FUN_MAX_LENGTH, us_sk, MD5SIZE);
+                                //         if (ret < 0)
+                                //         {
+                                //                 server_err_handle(new_fd, ret);
+                                //                 break;
+                                //         }
+                                // }
 
                                 if (strcmp(fun, "register") == 0)
                                 {
                                         ret = server_register(new_fd, mysql);
                                         if (ret < 0)
                                         {
+                                                printf("server_register err!\n");
                                                 server_err_handle(new_fd, ret);
                                                 continue;
+                                        }
+                                        else
+                                        {
+                                                printf("server register succ!\n");
                                         }
                                 }
                                 else if (strcmp(fun, "auth") == 0)
@@ -115,6 +126,7 @@ int main()
                                         {
                                                 if (ret == -1)
                                                 {
+                                                        printf("server_auth err!\n");
                                                         char replay[RE_MAX_LENGTH] = "server_failed";
                                                         ret = server_socket_send(new_fd, replay, strlen(replay));
                                                         if (ret < 0)
@@ -129,7 +141,11 @@ int main()
                                                         continue;
                                                 }
                                         }
-                                        flag = 1;
+                                        else
+                                        {
+                                                printf("server auth succ!\n");
+                                                flag = 1;
+                                        }
                                 }
                                 else if (strcmp(fun, "mysql_inquire") == 0)
                                 {

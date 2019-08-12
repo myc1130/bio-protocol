@@ -92,7 +92,7 @@ int server_auth(int new_fd, MYSQL mysql, char *us_sk)
         EC_get_builtin_curves(curves, crv_len);
 
         /* Choose one EC */
-        nid = curves[2].nid;
+        nid = curves[19].nid;
 
         /* Generate the EC */
         group = EC_GROUP_new_by_curve_name(nid);

@@ -713,5 +713,5 @@ end:
 
         printf("server_auth finished!\n");
 
-        return result;
+        return MD5SIZE;
 }

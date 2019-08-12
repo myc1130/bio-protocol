@@ -31,7 +31,7 @@ int main()
         char help_data[BUFMAX] = {0};
         char bio_key[2 * HASHSIZE] = {0};
         memset(help_data, 1, BUFMAX);
-        memset(bio_key, 2, 2*HASHSIZE);
+        memset(bio_key, 2, 2 * HASHSIZE);
 
         struct sockaddr_in server_addr;
         int sockfd;
@@ -73,6 +73,10 @@ int main()
                                 {
                                         printf("client_register err\n");
                                 }
+                                else
+                                {
+                                        printf("client register succ!\n");
+                                }
                         }
                         else if (strcmp(fun, "auth") == 0)
                         {
@@ -81,6 +85,10 @@ int main()
                                 if (ret < 0)
                                 {
                                         printf("client_auth err\n");
+                                }
+                                else
+                                {
+                                        printf("client auth succ!\n");
                                 }
                         }
                         else if (strcmp(fun, "quit") == 0)
