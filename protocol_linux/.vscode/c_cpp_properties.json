@@ -3,7 +3,9 @@
         {
             "name": "Mac",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/usr/local/Cellar/openssl/1.0.2s/include",
+                "/usr/local/Cellar/mysql/8.0.17/include/mysql"
             ],
             "defines": [],
             "macFrameworkPath": [
